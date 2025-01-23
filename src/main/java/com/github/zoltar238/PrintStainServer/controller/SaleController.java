@@ -1,6 +1,6 @@
 package com.github.zoltar238.PrintStainServer.controller;
 
-import com.github.zoltar238.PrintStainServer.dto.GetAllSalesDto;
+import com.github.zoltar238.PrintStainServer.dto.AllSalesDto;
 import com.github.zoltar238.PrintStainServer.dto.ResponsesEnum;
 import com.github.zoltar238.PrintStainServer.dto.SaleCreationDto;
 import com.github.zoltar238.PrintStainServer.persistence.entity.ItemEntity;
@@ -90,21 +90,23 @@ public class SaleController {
         Iterable<SaleEntity> sales = saleRepository.findAll();
 
         // Return list of sale data to client
-        ArrayList<SaleCreationDto> saleData = new ArrayList<SaleCreationDto>();
+        ArrayList<AllSalesDto> allSaleData = new ArrayList<>();
 
         sales.forEach(sale -> {
-            GetAllSalesDto getAllSalesDto = GetAllSalesDto.builder()
+            AllSalesDto allSalesDto = AllSalesDto.builder()
                     .saleId(sale.getSaleId())
                     .cost(sale.getCost())
                     .price(sale.getPrice())
                     .date(sale.getDate())
                     .itemName(sale.getItem().getName())
                     .build();
+
+            allSaleData.add(allSalesDto);
         });
 
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseBuilder.buildResponse(true,
                         ResponsesEnum.OK.toString(),
-                        saleData));
+                        allSaleData));
     }
 }

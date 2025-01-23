@@ -5,10 +5,10 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ResponseBuilder {
-    public <T> ResponseApi<T> buildResponse(boolean success, String responseCode, T data) {
+    public <T> ResponseApi<T> buildResponse(boolean success, String response, T data) {
         return ResponseApi.<T>builder()
                 .success(success)
-                .response(responseCode)
+                .response(response)
                 .data(data)
                 .build();
     }

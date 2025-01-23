@@ -5,8 +5,8 @@ import com.github.zoltar238.PrintStainServer.dto.ResponsesEnum;
 import com.github.zoltar238.PrintStainServer.persistence.entity.PersonEntity;
 import com.github.zoltar238.PrintStainServer.persistence.entity.RoleEntity;
 import com.github.zoltar238.PrintStainServer.persistence.entity.RoleEnum;
-import com.github.zoltar238.PrintStainServer.persistence.repository.RoleRepository;
 import com.github.zoltar238.PrintStainServer.persistence.repository.PersonRepository;
+import com.github.zoltar238.PrintStainServer.persistence.repository.RoleRepository;
 import com.github.zoltar238.PrintStainServer.utils.ResponseBuilder;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -77,25 +77,27 @@ public class PersonController {
 
             personRepository.save(person);
 
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(ResponseBuilder.buildResponse(true, ResponsesEnum.OK.toString(), "User registered successfully"));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ResponseBuilder.buildResponse(true, "User registered successfully", null));
 
             // todo: improve error registration error handling
         } catch (DataIntegrityViolationException e) {
-            if (e.getCause() != null && e.getCause().getMessage().contains("person_email_key")) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(ResponseBuilder.buildResponse(false, ResponsesEnum.EMAIL_ALREADY_REGISTERED.toString(), "Email already registered"));
-            } else if (e.getCause() != null && e.getCause().getMessage().contains("person_nickname_key")) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(ResponseBuilder.buildResponse(false, ResponsesEnum.USERNAME_ALREADY_REGISTERED.toString(), "Nickname already registered"));
+            System.out.println("Esto es el mensaje de error: " + e.getMessage());
+            if (e.getMessage().contains("person_email_key")) {
+                System.out.println("Email incorrecto");
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(ResponseBuilder.buildResponse(false,"This email is already registered. Please use a different one.", null));
+            } else if (e.getMessage().contains("person_username_key")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(ResponseBuilder.buildResponse(false, "This email is already registered. Please use a different one.", null));
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(ResponseBuilder.buildResponse(false, ResponsesEnum.UNEXPECTED_ERROR.toString(), "Unexpected error"));
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(ResponseBuilder.buildResponse(false, "Unexpected error", null));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ResponseBuilder.buildResponse(false, ResponsesEnum.UNEXPECTED_ERROR.toString(), "Unexpected error"));
+                    .body(ResponseBuilder.buildResponse(false, "Unexpected error", null));
         }
     }
 }   

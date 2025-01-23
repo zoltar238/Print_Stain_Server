@@ -12,10 +12,10 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetAllSalesDto {
+public class AllSalesDto {
+    private Long saleId;
     private Timestamp date;
     private BigDecimal cost;
     private BigDecimal price;
-    private Long saleId;
     private String itemName;
 }
