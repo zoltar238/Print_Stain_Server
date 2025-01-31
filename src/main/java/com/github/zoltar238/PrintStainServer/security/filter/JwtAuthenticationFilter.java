@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.jwtUtils = jwtUtils;
         this.personRepository = personRepository;
     }
-// todo: mejorar check de login
+// todo: improve error handling when login in
     // when user tries to authenticate
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -78,7 +78,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader("Authorization", token);
 
         // Successful authentication response
-        ResponseApi<String> responseApi = new ResponseApi<>(true, ResponsesEnum.LOGIN_CORRECT.name(), token);
+        ResponseApi<String> responseApi = new ResponseApi<>(true, "User has logged in correctly", token);
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(responseApi));
         response.setStatus(HttpStatus.OK.value());

@@ -89,7 +89,7 @@ public class PersonController {
                         .body(ResponseBuilder.buildResponse(false,"This email is already registered. Please use a different one.", null));
             } else if (e.getMessage().contains("person_username_key")) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body(ResponseBuilder.buildResponse(false, "This email is already registered. Please use a different one.", null));
+                        .body(ResponseBuilder.buildResponse(false, "This username is already registered. Please use a different one.", null));
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body(ResponseBuilder.buildResponse(false, "Unexpected error", null));

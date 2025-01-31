@@ -53,7 +53,7 @@ public class ItemController {
                         base64Images.add(imageTransformerService.transformImageToBase64(image.getUrl()));
                     } catch (IOException e) {
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body(ResponseBuilder.buildResponse(true, ResponsesEnum.IMAGE_PROCESS_ERROR.toString(), "Unexpected error processing images"));
+                                .body(ResponseBuilder.buildResponse(true, "Unexpected error processing images", null));
                     }
                 }
 
@@ -66,10 +66,10 @@ public class ItemController {
                 itemsDto.add(itemDTO);
             }
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(ResponseBuilder.buildResponse(true, ResponsesEnum.OK.toString(), itemsDto));
+                    .body(ResponseBuilder.buildResponse(true, "Items retrieved successfully", itemsDto));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ResponseBuilder.buildResponse(true, ResponsesEnum.UNEXPECTED_ERROR.toString(), "Unexpected error"));
+                    .body(ResponseBuilder.buildResponse(true, "Unexpected error", null));
         }
     }
 }
