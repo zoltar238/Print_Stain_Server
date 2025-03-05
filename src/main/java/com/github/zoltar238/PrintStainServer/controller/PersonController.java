@@ -82,7 +82,6 @@ public class PersonController {
 
             // todo: improve error registration error handling
         } catch (DataIntegrityViolationException e) {
-            System.out.println("Esto es el mensaje de error: " + e.getMessage());
             if (e.getMessage().contains("person_email_key")) {
                 System.out.println("Email incorrecto");
                 return ResponseEntity.status(HttpStatus.CONFLICT)
