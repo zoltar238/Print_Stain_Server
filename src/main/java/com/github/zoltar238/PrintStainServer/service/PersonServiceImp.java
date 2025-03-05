@@ -81,10 +81,10 @@ public class PersonServiceImp implements PersonService {
 
             // todo: improve error registration error handling
         } catch (DataIntegrityViolationException e) {
-            if (e.getMessage().contains("Key (email)")) {
+            if (e.getMessage().contains("Key (email)") || e.getMessage().contains("person_email_key")) {
                 log.error("User registration error, user with email \"{}\" already exists: {}", registerDTO.getEmail(), e.getMessage(), e);
                 throw new EmailAlreadyExistsException("This email is already registered. Please use a different one.");
-            } else if (e.getMessage().contains("Key (username)")) {
+            } else if (e.getMessage().contains("Key (username)") || e.getMessage().contains("person_username_key")) {
                 log.error("User registration error, user with username \"{}\" already exists: {}", registerDTO.getUsername(), e.getMessage(), e);
                 throw new UsernameAlreadyExistsException("This username is already registered. Please use a different one.");
             } else {

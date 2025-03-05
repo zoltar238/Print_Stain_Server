@@ -31,6 +31,18 @@ public class GlobalExceptionHandler {
                 .body(ResponseBuilder.buildResponse(false, ex.getMessage(), null));
     }
 
+    @ExceptionHandler(ItemNotFoundException.class)
+    public ResponseEntity<Object> handleItemNotFound(ItemNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ResponseBuilder.buildResponse(false, ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(CostOrPriceInvalidException.class)
+    public ResponseEntity<Object> handleCostOrPriceInvalid(CostOrPriceInvalidException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ResponseBuilder.buildResponse(false, ex.getMessage(), null));
+    }
+
     @ExceptionHandler(ImageProcessingException.class)
     public ResponseEntity<Object> handleImageProcessingErrors(ImageProcessingException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
