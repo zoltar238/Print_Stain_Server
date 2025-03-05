@@ -98,8 +98,8 @@ public class SaleServiceImp implements SaleService {
             log.info("Sale created successfully");
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(ResponseBuilder.buildResponse(true,
-                            ResponsesEnum.CREATED.toString(),
-                            "Sale created successfully"));
+                            "Sale created successfully",
+                            null));
         } catch (Exception e) {
             // Handle unexpected exceptions
             log.error("An unexpected error occurred: {}", e.getMessage(), e);
