@@ -43,9 +43,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception {
 
+        final String LOGIN_URL = "/person/login";
+
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils, personRepository);
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/person/login");
+        jwtAuthenticationFilter.setFilterProcessesUrl(LOGIN_URL);
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
@@ -57,9 +59,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::migrateSession)
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        .invalidSessionUrl("/person/login")
+                        .invalidSessionUrl(LOGIN_URL)
                         .maximumSessions(1)
-                        .expiredUrl("/person/login")
+                        .expiredUrl(LOGIN_URL)
                         .sessionRegistry(sessionRegistry()))
                 .httpBasic(Customizer.withDefaults())
                 .headers(headers -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable))
