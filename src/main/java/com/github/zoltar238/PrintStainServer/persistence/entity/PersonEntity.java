@@ -53,7 +53,7 @@ public class PersonEntity {
     private Timestamp create_date;
 
     //fetch eager -> get every single role at once
-    @ManyToMany(fetch = FetchType.EAGER,  cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "person_role", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles;
 

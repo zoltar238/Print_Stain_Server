@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PrintStainServerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PrintStainServerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PrintStainServerApplication.class, args);
+    }
 
 }

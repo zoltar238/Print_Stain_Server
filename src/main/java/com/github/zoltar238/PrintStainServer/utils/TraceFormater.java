@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class TraceFormater {
     public static String format(Throwable ex) {
         return Arrays.stream(ex.getStackTrace())
-        .map(StackTraceElement::toString)
-        .collect(Collectors.joining("\n    ", "    ", ""));
+                .map(StackTraceElement::toString)
+                .collect(Collectors.joining("\n    ", "    ", ""));
     }
 }

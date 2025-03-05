@@ -31,7 +31,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.jwtUtils = jwtUtils;
         this.personRepository = personRepository;
     }
-// todo: improve error handling when login in
+
+    // todo: improve error handling when login in
     // when user tries to authenticate
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -45,7 +46,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     .findByUsername(personRequest.getUsername())
                     .orElseThrow(() -> new IOException("Nickname not found"));
             personEntity.setPassword(personRequest.getPassword());
-        }  catch (IOException e) {
+        } catch (IOException e) {
             // configure response in case of invalid request, if failed authorization return UNAUTHORIZED
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);

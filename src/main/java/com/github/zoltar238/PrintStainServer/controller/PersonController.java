@@ -1,6 +1,7 @@
 package com.github.zoltar238.PrintStainServer.controller;
 
 import com.github.zoltar238.PrintStainServer.dto.RegisterDto;
+import com.github.zoltar238.PrintStainServer.dto.ResponseApi;
 import com.github.zoltar238.PrintStainServer.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,8 @@ public class PersonController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerPerson(@Valid @RequestBody RegisterDto registerDTO) {
+    public ResponseEntity<ResponseApi<String>> registerPerson(@Valid @RequestBody RegisterDto registerDTO) {
+        log.info("Attempting registration of new user with username: {}", registerDTO.getUsername());
         return personService.registerPerson(registerDTO);
     }
 }   

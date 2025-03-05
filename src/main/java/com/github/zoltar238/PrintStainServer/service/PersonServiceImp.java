@@ -1,6 +1,7 @@
 package com.github.zoltar238.PrintStainServer.service;
 
 import com.github.zoltar238.PrintStainServer.dto.RegisterDto;
+import com.github.zoltar238.PrintStainServer.dto.ResponseApi;
 import com.github.zoltar238.PrintStainServer.exceptions.EmailAlreadyExistsException;
 import com.github.zoltar238.PrintStainServer.exceptions.UnexpectedException;
 import com.github.zoltar238.PrintStainServer.exceptions.UsernameAlreadyExistsException;
@@ -39,7 +40,7 @@ public class PersonServiceImp implements PersonService {
     }
 
     @Override
-    public ResponseEntity<?> registerPerson(RegisterDto registerDTO) {
+    public ResponseEntity<ResponseApi<String>> registerPerson(RegisterDto registerDTO) {
         try {
             Set<RoleEntity> roles = new HashSet<>();
 
@@ -74,20 +75,38 @@ public class PersonServiceImp implements PersonService {
 
             personRepository.save(person);
 
+            log.info("User registered successfully with username: {}", registerDTO.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(ResponseBuilder.buildResponse(true, "User registered successfully", null));
 
             // todo: improve error registration error handling
         } catch (DataIntegrityViolationException e) {
             if (e.getMessage().contains("Key (email)")) {
-                throw new EmailAlreadyExistsException("The email \"" + registerDTO.getEmail() + "\" is already registered.");
+                log.error("User registration error, user with email \"{}\" already exists: {}", registerDTO.getEmail(), e.getMessage(), e);
+                throw new EmailAlreadyExistsException("This email is already registered. Please use a different one.");
             } else if (e.getMessage().contains("Key (username)")) {
-                throw new UsernameAlreadyExistsException("The username \"" + registerDTO.getUsername() + "\" is already registered.");
+                log.error("User registration error, user with username \"{}\" already exists: {}", registerDTO.getUsername(), e.getMessage(), e);
+                throw new UsernameAlreadyExistsException("This username is already registered. Please use a different one.");
             } else {
-                throw new UnexpectedException("Unexpected error: " + e.getMessage(), e);
+                log.error("User registration unexpected error: {}", e.getMessage(), e);
+                throw new UnexpectedException("Unexpected error while registering user");
             }
         } catch (Exception e) {
-            throw new UnexpectedException("Unexpected error: " + e.getMessage(), e);
+            log.error("User registration unexpected error: {}", e.getMessage(), e);
+            throw new UnexpectedException("Unexpected error while registering user");
         }
+    }
+
+
+    //Todo: implement user deletion
+    @Override
+    public ResponseEntity<ResponseApi<String>> deleteUser() {
+        return null;
+    }
+
+    //Todo: implement password update
+    @Override
+    public ResponseEntity<ResponseApi<String>> updatePassword() {
+        return null;
     }
 }
